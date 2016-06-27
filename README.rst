@@ -33,6 +33,7 @@ Dependencies
 - `powerlaw`__
 - `seaborn`__
 - `pyBiRewire`__
+- `cmdstan`__
 - the standard scientific computing Python stack, which we recommend setting up by simply using the `Anaconda Python distributon`__. Relevant packages include:
 - - numpy
 - - scipy
@@ -41,6 +42,7 @@ Dependencies
 __ https://github.com/jeffalstott/powerlaw
 __ http://stanford.edu/~mwaskom/software/seaborn/
 __ https://github.com/andreagobbi/pyBiRewire
+__ http://mc-stan.org/interfaces/cmdstan
 __ http://docs.continuum.io/anaconda/index
 
 Original Data Files
