@@ -1,7 +1,7 @@
 inventorexploration
 ====
 This is the code accompanying the paper:
-Jeff Alstott, Giorgio Triulzi, Bowen Yan, Jianxi Luo. (2017). “	Inventors' Explorations Across Technology Domains.” Available on SSRN `here`__ and in press at `Design Science`.
+Jeff Alstott, Giorgio Triulzi, Bowen Yan, Jianxi Luo. (2017). “	Inventors' Explorations Across Technology Domains.” Available on SSRN `here`__ and in press at `Design Science`__.
 
 __ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2936709
 __ http://www.designsciencejournal.org/
