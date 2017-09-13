@@ -2219,7 +2219,7 @@ for class_of_interest in classes_of_interest:
             all_info.append(i+label)
     class_description = class_data.set_index('IPC4').ix[class_of_interest, 'Description']
     print(class_of_interest, class_description)
-    matched_case_studies.ix[ind, all_info].to_csv(figures_directory+'PNAS_case_studies_%s_%s.csv'%(class_description, class_of_interest))
+    matched_case_studies.ix[ind, all_info].to_csv(figures_directory+'case_studies_%s_%s.csv'%(class_description, class_of_interest))
 
 
 # Comparison of Alternative Relatedness Measures
