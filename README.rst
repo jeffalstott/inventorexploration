@@ -63,4 +63,5 @@ Original Data Files
 Contact
 ====
 Please contact the authors if you have questions/comments/concerns/stories:
-jeffalstott at gmail
+gtriulzi at mit
+alstott at mit
