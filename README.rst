@@ -8,9 +8,9 @@ __ https://github.com/jeffalstott/inventorexploration/raw/master/manuscript/Alst
 __ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2936709
 __ http://www.designsciencejournal.org/
 
-How to Use
+How to Reproduce the Study
 ====
-The code base is organized as a set of `IPython notebooks`__, which are also duplicated as simple Python ``.py`` script files. The only thing you should need to touch directly is the notebook `Manuscript_Code`__ , which walks through all the steps of:
+The code base is organized as a set of `IPython notebooks`__, which are also duplicated as simple Python ``.py`` script files. To reproduce the full study, the only thing you should need to touch directly is the notebook `Manuscript_Code`__ , which walks through all the steps of:
 
 1. calculating the relatedness between technology domains from patent data, by creating randomized versions of history and comparing the empirical data to it
 2. creating a predictive model of inventors' movements, using as predictors relatedness, popularity, and other factors.
@@ -20,9 +20,11 @@ __ http://ipython.org/notebook.html
 __ https://github.com/jeffalstott/inventorexploration/blob/master/src/Manuscript_Code.ipynb
 __ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2936709
 
-The raw data files we use are too large to host on Github (>100MB), and we are figuring out an external place to host them. Once this is done, the `Manuscript_Code` notebook will automatically download the raw data before processing it.
+The data files involved are too large to host on Github (>100MB), and so they are hosted on the Design Science website. Just download the contents to data/ and you should be good to go. 
 
-[More details forthcoming].
+How to Do Your Own Analysis
+====
+Reproducing the full study would require significant computational resources (see below). As such, the data download also includes final versions of the data, which will allow to you to recreate just the final analyses described in the manuscript. This would also be a sensible starting place for doing your own analysis, answering new questions with the same data.
 
 Randomization with a cluster
 ====
