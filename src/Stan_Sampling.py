@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 # n_chains = 50
 # chains_start = 0
@@ -24,7 +24,7 @@
 # count_variables = ['Agent_Number_of_Patents_in_Class','Agent_Number_of_Citations_in_Class']
 
 
-# In[2]:
+# In[3]:
 
 run_label = n_observations
 
@@ -39,12 +39,12 @@ create_directory_if_not_existing(model_directory+'stan_samples/')
 create_directory_if_not_existing(model_directory+'stan_samples/{0}/'.format(run_label))
 
 
-# In[4]:
+# In[6]:
 
 models_store = pd.HDFStore(model_directory+'performance_models.h5')
 
 
-# In[55]:
+# In[4]:
 
 from os import system
 
@@ -77,7 +77,7 @@ def submit_cmdstan_jobs(model,data_file):
         system('qsub '+this_job_file)
 
 
-# In[11]:
+# In[8]:
 
 store = pd.HDFStore(data_directory+'Agent_Entries/agent_%s_%s.h5'%(target, class_system), mode='r')
 entries = store['%s_%s_with_performance'%(target, class_system)]
@@ -126,7 +126,7 @@ for thr in hit_thresholds:
 entries.to_hdf(model_directory+'entries_for_performance_analysis.h5', 'entries')
 
 
-# In[56]:
+# In[9]:
 
 if n_observations=='full' or n_observations=='all':
     N = entries.shape[0]
@@ -136,7 +136,7 @@ from numpy.random import choice
 ind = choice(entries.index,N, False)
 
 
-# In[57]:
+# In[10]:
 
 from patsy import dmatrix
 from pystan import stan_rdump
@@ -152,7 +152,10 @@ formula_variables = ['Relatedness',
                      'np.power(Popularity, 2)',
                      'log(Agent_Previous_Citations_to_Class+1)',
                      'log(Agent_Productivity_Patents)',
-                     'log(CoAgent_Previous_Patent_Count_in_Class+1)']
+                     'log(CoAgent_Previous_Patent_Count_in_Class+1)',
+                     'Guided',
+                     'log(N_Agents)'
+                    ]
 formula = " + ".join(formula_variables)
 models_store['%s/formula_variables'%hdf_label] = pd.Series(formula_variables)
 
@@ -173,34 +176,71 @@ for count_variable in count_variables:
     submit_cmdstan_jobs(model,data_file)
 
 
-# In[ ]:
+# In[12]:
 
-model = 'hits_sampling_model'
-hdf_label = 'hits'
-
+model = 'joint_counts_sampling_model'
+hdf_label = 'joint_counts'
 formula_variables = ['Relatedness',
                      'np.power(Relatedness, 2)',
-                     'np.power(Relatedness, 3)',                     
                      'Popularity',
                      'np.power(Popularity, 2)',
                      'log(Agent_Previous_Citations_to_Class+1)',
                      'log(Agent_Productivity_Patents)',
-                     'log(CoAgent_Previous_Patent_Count_in_Class+1)']
+                     'log(CoAgent_Previous_Patent_Count_in_Class+1)',
+                     'Guided',
+                     'log(N_Agents)'
+                    ]
 formula = " + ".join(formula_variables)
-
 models_store['%s/formula_variables'%hdf_label] = pd.Series(formula_variables)
 
-for threshold in hit_thresholds:
-    predictors = dmatrix(formula, entries.ix[ind])
-    stan_data = {'y': asarray(entries.ix[ind, 'Citations_Hit_%i'%threshold]),
-                 'x': asarray(predictors),
-                 'N': N,
-                 'K': predictors.shape[1],
-             }
+
+
+baselines = [count_variable+'_Mean_for_Year_and_Class_of_New_Immigrants_to_Class' for count_variable in count_variables]
+predictors = dmatrix(formula, entries.ix[ind])
+stan_data = {'y': asarray(entries.ix[ind, count_variables].astype('int')).T,
+             'x': asarray(predictors),
+             'M': len(count_variables),
+             'N': N,
+             'K': predictors.shape[1],
+             'baseline': asarray(entries.ix[ind,baselines]).T
+         }
+
+data_file = 'joint_counts_data_{0}.stan'.format(n_observations)
+stan_rdump(stan_data, model_directory+data_file)
+submit_cmdstan_jobs(model,data_file)
+
+
+# In[ ]:
+
+# model = 'hits_sampling_model'
+# hdf_label = 'hits'
+
+# formula_variables = ['Relatedness',
+#                      'np.power(Relatedness, 2)',
+#                      'np.power(Relatedness, 3)',                     
+#                      'Popularity',
+#                      'np.power(Popularity, 2)',
+#                      'log(Agent_Previous_Citations_to_Class+1)',
+#                      'log(Agent_Productivity_Patents)',
+#                      'log(CoAgent_Previous_Patent_Count_in_Class+1)',
+#                      'Guided',
+#                      'log(N_Agents)'                    
+#                     ]
+# formula = " + ".join(formula_variables)
+
+# models_store['%s/formula_variables'%hdf_label] = pd.Series(formula_variables)
+
+# for threshold in hit_thresholds:
+#     predictors = dmatrix(formula, entries.ix[ind])
+#     stan_data = {'y': asarray(entries.ix[ind, 'Citations_Hit_%i'%threshold]),
+#                  'x': asarray(predictors),
+#                  'N': N,
+#                  'K': predictors.shape[1],
+#              }
             
-    data_file = 'hits_data_thr_{0}_{1}.stan'.format(threshold, n_observations)
-    stan_rdump(stan_data, model_directory+data_file)
-    submit_cmdstan_jobs(model,data_file)
+#     data_file = 'hits_data_thr_{0}_{1}.stan'.format(threshold, n_observations)
+#     stan_rdump(stan_data, model_directory+data_file)
+#     submit_cmdstan_jobs(model,data_file)
 
 
 # In[ ]:

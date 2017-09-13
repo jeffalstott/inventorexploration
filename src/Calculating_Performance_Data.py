@@ -251,6 +251,17 @@ entries['First_Patent_Application_Year']= patent_data[patent_data['Agent_Patent_
 entries['Years_Since_First_Patent'] = entries['Application_Year'] - entries['First_Patent_Application_Year']
 
 
+# In[ ]:
+
+n_authors = patent_data['Patent'].value_counts()
+entries['N_Agents'] = n_authors.ix[entries['Patent']].values
+
+n_new_authors = entries['Patent'].value_counts()
+entries['N_New_Agents'] = n_new_authors.ix[entries['Patent']].values
+
+entries['Guided'] = entries['N_New_Agents']!=entries['N_Agents']
+
+
 # In[25]:
 
 store = pd.HDFStore(data_directory+'Agent_Entries/agent_%s_%s.h5'%(target, class_system))
