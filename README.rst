@@ -20,7 +20,9 @@ __ http://ipython.org/notebook.html
 __ https://github.com/jeffalstott/inventorexploration/blob/master/src/Manuscript_Code.ipynb
 __ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2936709
 
-The data files involved are too large to host on Github (>100MB), and so they are hosted on the Design Science website. Just download the contents to data/ and you should be good to go. 
+The data files involved are too large to host on Github (>100MB), and so they are hosted on Zenodo `here__`. Just download the contents to 'data/' and you should be good to go. 
+
+__ https://zenodo.org/record/1035458
 
 How to Do Your Own Analysis
 ====
